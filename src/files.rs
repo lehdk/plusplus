@@ -1,8 +1,7 @@
 use std::{fs, path::PathBuf};
 use dirs::home_dir;
 
-#[path = "cli.rs"]
-mod cli;
+pub use crate::cli;
 
 pub fn init() {
     let result = fs::create_dir_all(dir());
@@ -23,7 +22,7 @@ pub fn read_config() -> cli::Config {
             serde_json::from_str(&result).unwrap()
         }
         Err(_) => {
-            let config = cli::Config { github_token: String::from("")};
+            let config = cli::Config {..Default::default()};
             write_config(&config);
 
             config
